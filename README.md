@@ -1,2 +1,2 @@
 # Bstacles
-Old game where you avoid obstacles - use 'a' or 'd' or enter
+Old game where you ('O') avoid obstacles ('X') - use move left 'a' or move right 'd' or don't move - enter
