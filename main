@@ -1,0 +1,90 @@
+# Next steps to impplement:
+#   - control movement with keyboard arrows
+#   - implement bonuses in game, example: more columns
+#   - new score system, movements per minute or speedup the game
+
+import random
+
+def showBoard(board):
+    # shows board
+    print('', '', sep='\n')
+    for i in board:
+        for j in i:
+            print('|', j, sep='', end='')
+        print('|')
+
+def moveCheck(n, board, pos):
+    nastSegm=board[-2]
+    if n=='a':
+        if pos!=0:
+            if nastSegm[pos-1]!='X':
+                pos -= 1
+                return True, pos
+            else:
+                return False, pos
+        else:
+            if nastSegm[pos]!='X':
+                return True, pos
+            else:
+                return False, pos
+    elif n=='d':
+        if pos!=len(board[-1])-1:
+            if nastSegm[pos+1]!='X':
+                pos += 1
+                return True, pos
+            else:
+                return False, pos
+        else:
+            if nastSegm[pos]!='X':
+                return True, pos
+            else:
+                return False, pos
+    elif n=='':
+        if nastSegm[pos]!='X':
+            return True, pos
+        else:
+            return False, pos
+    else:
+        return False, pos
+
+def move(n, board, pos):
+    # adds segment with obstacle at the beginning
+    obstacleCount = random.randint(0, 2)
+    newSegm = [' ', ' ', ' ']
+    for j in range(obstacleCount):
+        obstaclePos = random.randint(0, 2)
+        newSegm[obstaclePos] = 'X'
+    board.insert(0, newSegm)
+    # refresh player segment
+    playerSegm = board[-2].copy()
+    playerSegm[pos] = 'O'
+    # pops last segment and append fresh one
+    board.pop(-1)
+    board.pop(-1)
+    board.append(playerSegm)
+    return board
+
+def main():
+    gra=True    
+    # first two segment of a board
+    boardPiece = [' ', ' ', ' ']
+    board = [[' ', 'O', ' ']]
+    # creates start position of a player
+    pos = 1
+    for i in range(2):
+        board.insert(0, boardPiece)
+    score = 0
+    while gra:
+        showBoard(board)
+        n = input()
+        # checks if move is legal
+        gra, *POS = moveCheck(n, board, pos)
+        pos = POS[0]
+        # creating a step
+        board = move(n, board, pos)
+        score += 1
+
+        if gra==False:
+            print('It is end of the game. You did ', score, 'steps. Congrats!')
+        
+main()
